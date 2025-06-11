@@ -45,6 +45,7 @@
       border: 1px solid #ddd;
       padding: 10px;
       text-align: center;
+      vertical-align: top;
     }
     th {
       background-color: #ffe0b2;
@@ -102,7 +103,7 @@
     class="sushi-image"
   />
   <h2>Latest Reviews</h2>
-  <table>
+  <table id="reviews-table">
     <thead>
       <tr>
         <th>Restaurant</th>
@@ -113,22 +114,84 @@
       </tr>
     </thead>
     <tbody>
-      <tr>
-        <td><a href="https://g.co/kgs/7G8y29i" target="_blank">Saaps</a></td>
-        <td>2025-06-10</td>
-        <td>6.8</td>
-        <td>6.5</td>
-        <td>
-          <ul style="list-style: none; padding-left: 0; text-align: left;">
-            <li>More avocado than shrimp</li>
-            <li>Presentation was subpar</li>
-            <li>Avocado was soft, shrimp was well cooked</li>
-          </ul>
-        </td>
-      </tr>
+      <!-- Reviews will be loaded here -->
     </tbody>
   </table>
 </div>
+
+<script>
+  const csvUrl = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vT4FygRPPEea92dDnfZkYVqGsg4ylUghiNjx8ISoRzz9hFOkY-YWUx_lDgVkYR8H-7WznXt_0sCDrn0/pub?output=csv';
+
+  function parseCSV(text) {
+    // Split into lines and then by commas, simple CSV parsing
+    const lines = text.trim().split('\n');
+    return lines.map(line => {
+      // This naive split assumes no commas inside values
+      return line.split(',');
+    });
+  }
+
+  function createNotesList(notesText) {
+    const ul = document.createElement('ul');
+    ul.style.listStyle = 'none';
+    ul.style.paddingLeft = '0';
+    ul.style.textAlign = 'left';
+    const notes = notesText.split('|'); // Notes separated by pipe |
+    notes.forEach(note => {
+      const li = document.createElement('li');
+      li.textContent = note.trim();
+      ul.appendChild(li);
+    });
+    return ul;
+  }
+
+  fetch(csvUrl)
+    .then(response => response.text())
+    .then(data => {
+      const rows = parseCSV(data);
+      // Remove header row
+      rows.shift();
+
+      const tbody = document.querySelector('#reviews-table tbody');
+      tbody.innerHTML = '';
+
+      rows.forEach(row => {
+        const tr = document.createElement('tr');
+
+        // Columns: Restaurant, Date, ChandiniScore, JasonScore, Notes
+        const [restaurant, date, chandiniScore, jasonScore, notes] = row;
+
+        const restaurantTd = document.createElement('td');
+        const a = document.createElement('a');
+        a.href = 'https://g.co/kgs/7G8y29i'; // Static link for now; update if you want dynamic URLs
+        a.target = '_blank';
+        a.textContent = restaurant;
+        restaurantTd.appendChild(a);
+        tr.appendChild(restaurantTd);
+
+        const dateTd = document.createElement('td');
+        dateTd.textContent = date;
+        tr.appendChild(dateTd);
+
+        const chandiniTd = document.createElement('td');
+        chandiniTd.textContent = chandiniScore;
+        tr.appendChild(chandiniTd);
+
+        const jasonTd = document.createElement('td');
+        jasonTd.textContent = jasonScore;
+        tr.appendChild(jasonTd);
+
+        const notesTd = document.createElement('td');
+        notesTd.appendChild(createNotesList(notes));
+        tr.appendChild(notesTd);
+
+        tbody.appendChild(tr);
+      });
+    })
+    .catch(err => {
+      console.error('Error fetching or parsing CSV:', err);
+    });
+</script>
 
 </body>
 </html>
