@@ -60,6 +60,32 @@
       width: 100%;
       border-radius: 8px;
       box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+      max-width: 600px;
+      margin: 20px auto;
+      display: block;
+    }
+    @media (max-width: 600px) {
+      .container {
+        padding: 10px;
+        margin-top: -30px;
+      }
+      .sushi-image {
+        max-width: 100%;
+      }
+      table {
+        display: block;
+        overflow-x: auto;
+        white-space: nowrap;
+      }
+      th, td {
+        padding: 8px;
+        font-size: 14px;
+      }
+      header h1 {
+        font-size: 28px;
+        padding: 0 10px;
+        text-align: center;
+      }
     }
   </style>
 </head>
@@ -74,7 +100,6 @@
     src="https://images.unsplash.com/photo-1553621042-f6e147245754"
     alt="Sushi Platter"
     class="sushi-image"
-    style="max-width: 600px; margin: 20px auto; display: block;"
   />
   <h2>Latest Reviews</h2>
   <table>
