@@ -1,9 +1,109 @@
 <!DOCTYPE html>
-<html>
-  <head>
-    <title>My GitHub Page</title>
-  </head>
-  <body>
-    <h1>Hello, GitHub Pages!</h1>
-  </body>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>2 Bite Sushi Review</title>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet" />
+  <style>
+    body {
+      font-family: 'Roboto', sans-serif;
+      background: linear-gradient(to right, #f8f8f8, #e0f7fa);
+      margin: 0;
+      padding: 0;
+    }
+    header {
+      background-image: url('https://images.unsplash.com/photo-1603094386564-fbc58c4c54f8');
+      background-size: cover;
+      background-position: center;
+      height: 200px;
+      color: white;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      text-shadow: 2px 2px 4px #000000;
+      border-bottom: 4px solid #ff7043;
+    }
+    header h1 {
+      font-size: 36px;
+    }
+    .container {
+      padding: 20px;
+      max-width: 900px;
+      margin: auto;
+      background: rgba(255, 255, 255, 0.95);
+      box-shadow: 0 0 15px rgba(0,0,0,0.2);
+      border-radius: 8px;
+      margin-top: -50px;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 20px;
+    }
+    th, td {
+      border: 1px solid #ddd;
+      padding: 10px;
+      text-align: center;
+    }
+    th {
+      background-color: #ffe0b2;
+    }
+    a {
+      color: #ff7043;
+      text-decoration: none;
+    }
+    a:hover {
+      text-decoration: underline;
+    }
+    .sushi-image {
+      width: 100%;
+      border-radius: 8px;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <h1>2 Bite Sushi Review</h1>
+</header>
+
+<div class="container">
+  <img
+    src="https://images.unsplash.com/photo-1553621042-f6e147245754"
+    alt="Sushi Platter"
+    class="sushi-image"
+    style="max-width: 600px; margin: 20px auto; display: block;"
+  />
+  <h2>Latest Reviews</h2>
+  <table>
+    <thead>
+      <tr>
+        <th>Restaurant</th>
+        <th>Date</th>
+        <th>Chandini's Score</th>
+        <th>Jason's Score</th>
+        <th>Notes</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a href="https://g.co/kgs/7G8y29i" target="_blank">Saaps</a></td>
+        <td>2025-06-10</td>
+        <td>6.8</td>
+        <td>6.5</td>
+        <td>
+          <ul style="list-style: none; padding-left: 0; text-align: left;">
+            <li>More avocado than shrimp</li>
+            <li>Presentation was subpar</li>
+            <li>Avocado was soft, shrimp was well cooked</li>
+          </ul>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+</body>
 </html>
