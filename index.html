@@ -114,7 +114,7 @@
       </tr>
     </thead>
     <tbody>
-      <!-- Reviews will be loaded here -->
+      <!-- Data from Google Sheet will be inserted here -->
     </tbody>
   </table>
 </div>
@@ -123,12 +123,29 @@
   const csvUrl = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vT4FygRPPEea92dDnfZkYVqGsg4ylUghiNjx8ISoRzz9hFOkY-YWUx_lDgVkYR8H-7WznXt_0sCDrn0/pub?output=csv';
 
   function parseCSV(text) {
-    // Split into lines and then by commas, simple CSV parsing
     const lines = text.trim().split('\n');
     return lines.map(line => {
-      // This naive split assumes no commas inside values
-      return line.split(',');
+      // Handles commas inside quotes
+      const values = [];
+      let insideQuotes = false;
+      let current = '';
+      for (let char of line) {
+        if (char === '"') {
+          insideQuotes = !insideQuotes;
+        } else if (char === ',' && !insideQuotes) {
+          values.push(current);
+          current = '';
+        } else {
+          current += char;
+        }
+      }
+      values.push(current);
+      return values;
     });
+  }
+
+  function cleanNotes(notes) {
+    return notes.replace(/^"(.*)"$/, '$1'); // remove starting & ending quotes if they exist
   }
 
   function createNotesList(notesText) {
@@ -136,7 +153,7 @@
     ul.style.listStyle = 'none';
     ul.style.paddingLeft = '0';
     ul.style.textAlign = 'left';
-    const notes = notesText.split('|'); // Notes separated by pipe |
+    const notes = notesText.split('|'); // Notes are pipe-separated
     notes.forEach(note => {
       const li = document.createElement('li');
       li.textContent = note.trim();
@@ -149,8 +166,7 @@
     .then(response => response.text())
     .then(data => {
       const rows = parseCSV(data);
-      // Remove header row
-      rows.shift();
+      rows.shift(); // Remove header row
 
       const tbody = document.querySelector('#reviews-table tbody');
       tbody.innerHTML = '';
@@ -158,12 +174,12 @@
       rows.forEach(row => {
         const tr = document.createElement('tr');
 
-        // Columns: Restaurant, Date, ChandiniScore, JasonScore, Notes
-        const [restaurant, date, chandiniScore, jasonScore, notes] = row;
+        const [restaurant, date, chandiniScore, jasonScore, notesRaw] = row;
+        const notes = cleanNotes(notesRaw);
 
         const restaurantTd = document.createElement('td');
         const a = document.createElement('a');
-        a.href = 'https://g.co/kgs/7G8y29i'; // Static link for now; update if you want dynamic URLs
+        a.href = 'https://g.co/kgs/7G8y29i'; // static link to Saaps (you can make this dynamic later)
         a.target = '_blank';
         a.textContent = restaurant;
         restaurantTd.appendChild(a);
